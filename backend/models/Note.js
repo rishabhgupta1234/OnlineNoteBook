@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const notesSchema = new Schema({
+	user: {
+		// each note is associated with some person
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "user",
+	},
 	title: {
 		type: String,
 		required: true,
@@ -19,4 +24,5 @@ const notesSchema = new Schema({
 		default: Date.now,
 	},
 });
-module.exports = mongoose.model("notes", notesSchema);
+const Note = mongoose.model("notes", notesSchema);
+module.exports = Note;
