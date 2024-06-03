@@ -16,7 +16,7 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
 	}
 });
 
-// ROUTE -2 Create a note using  : POST "/api/notes/addnote" Login requited
+// ROUTE -2 Create a note using  : POST "/api/notes/addnote" Login required
 router.post(
 	"/addnote",
 	fetchuser,
@@ -75,7 +75,7 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 			return res.status(404).send("Not found");
 		}
 		if (note.user.toString() !== req.user.id) {
-			return res.status(401).send("Not allowed");
+			return res.status(401).send("Not allowed to update");
 		}
 		note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true });
 		res.json({ note });
@@ -94,7 +94,7 @@ router.delete("/deletenote/:id", fetchuser, async (req, res) => {
 		}
 		// Allow deletion only if user owns this Note
 		if (note.user.toString() !== req.user.id) {
-			return res.status(401).send("Not allowed");
+			return res.status(401).send("Not allowed to delete");
 		}
 		note = await Note.findByIdAndDelete(req.params.id);
 		// console.log(note);

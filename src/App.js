@@ -6,18 +6,18 @@ import About from "./components/About";
 import Navbar from "./components/Navbar";
 import Users from "./components/Users";
 import NoteState from "./context/notes/NoteState";
+import Alert from "./components/Alert";
 function App() {
 	return (
 		<>
 			<NoteState>
 				<Router>
 					<Navbar />
-
+					<Alert message="this is alert" />
 					<div className="container">
 						<Routes>
 							<Route exact path="/" element={<Home />} />
 							<Route exact path="/about" element={<About />} />
-							{/* <Route exact path="/users" element={<Users />} /> */}
 						</Routes>
 					</div>
 				</Router>

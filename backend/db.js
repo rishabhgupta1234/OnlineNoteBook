@@ -8,14 +8,11 @@ const connectToMongo = () => {
 	mongoose
 		.connect(mongoURI)
 		.then(() => {
-			console.log("Connected to Mongo Successfully");
+			console.log("Connected to Mongoose Successfully");
 		})
 		.catch(() => {
-			console.log("ERROR occurred while connection to Mongo DB");
+			console.log("ERROR occurred while connecting to Mongo DB");
 		});
-	// mongoose.connect(mongoURI, () => {
-	// 	console.log("Connected to Mongo Successfully");
-	// });
 };
 
 module.exports = connectToMongo;
