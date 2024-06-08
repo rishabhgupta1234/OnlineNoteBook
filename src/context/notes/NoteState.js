@@ -37,36 +37,36 @@ const NoteState = (props) => {
 			body: JSON.stringify({ title, description, tag }),
 		});
 
-		const json = await response.json();
+		const note = await response.json();
 
-		console.log("adding a new node");
-		// const note = {
-		// 	id: "6657d92773856dd1644178831",
-		// 	user: "6657528d32d529a31c25dcbd",
-		// 	title: title,
-		// 	description: description,
-		// 	tag: tag,
-		// 	date: "2024-05-30T01:40:55.477Z",
-		// 	__v: 0,
-		// };
-		const note = json;
 		setNotes(notes.concat(note));
-		return json;
+		// return json;
 	};
-	const deleteNote = (id) => {
+	const deleteNote = async (id) => {
 		// TODO API Call
+
+		const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				"auth-token":
+					"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY1NzUyOGQzMmQ1MjlhMzFjMjVkY2JkIn0sImlhdCI6MTcxNjk5OTEwNn0.CkuWYIn4TKMo6u7f1utL-gm4J_0yEflo-vCLpEUEmCs",
+			},
+		});
+		const json = await response.json();
 
 		console.log("Deleting the note with id ", id);
 		const newNotes = notes.filter((note) => {
 			return note._id !== id;
 		});
 		setNotes(newNotes);
+		return json;
 	};
 	const editNote = async (id, title, description, tag) => {
 		// TODO API Call
 
 		const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-			method: "POST",
+			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				"auth-token":
@@ -79,15 +79,19 @@ const NoteState = (props) => {
 
 		console.log("note is edited with id ", id);
 
-		for (let index = 0; index < notes.length; index++) {
-			const element = notes[index];
+		let newNotes = JSON.parse(JSON.stringify(notes));
+
+		for (let index = 0; index < newNotes.length; index++) {
+			const element = newNotes[index];
 
 			if (element._id === id) {
-				element.title = title;
-				element.description = description;
-				element.tag = tag;
+				newNotes[index].title = title;
+				newNotes[index].description = description;
+				newNotes[index].tag = tag;
+				break;
 			}
 		}
+		setNotes(newNotes);
 		return json;
 	};
 

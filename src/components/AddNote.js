@@ -6,9 +6,14 @@ export default function AddNote() {
 
 	const [note, setNote] = useState({ title: "", description: "", tag: "default" });
 
-	const handleClick = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		addNote(note.title, note.description, note.tag);
+		setNote({
+			title: "",
+			description: "",
+			tag: "default",
+		});
 	};
 	const onChange = (e) => {
 		setNote({
@@ -21,37 +26,38 @@ export default function AddNote() {
 		<div>
 			<div className="container my-3">
 				<h2>Add a Note</h2>
-				<form>
-					<div class="mb-3">
-						{/* <label for="title" class="form-label">
-							Note title
-						</label> */}
+				<form onSubmit={handleSubmit}>
+					<div className="mb-3">
 						<input
 							type="text"
-							class="form-control"
+							className="form-control"
 							id="title"
 							name="title"
+							value={note.title}
 							onChange={onChange}
 							placeholder="Enter title"
+							minLength={5}
+							required
 						/>
 					</div>
-					<div class="form-group my-2">
+					<div className="form-group my-2">
 						<textarea
-							class="form-control"
+							className="form-control"
 							id="description"
 							name="description"
+							value={note.description}
 							rows="3"
 							onChange={onChange}
 							placeholder="Enter description"
+							minLength={5}
+							required
 						/>
 					</div>
-					{/* <div class="mb-3 form-check">
-						<input type="checkbox" class="form-check-input" id="exampleCheck1" />
-						<label class="form-check-label" for="exampleCheck1">
-							Check me out
-						</label>
-					</div> */}
-					<button type="submit" class="btn btn-primary" onClick={handleClick}>
+
+					<button
+						disabled={note.title.length < 5 || note.description.length < 5}
+						type="submit"
+						className="btn btn-primary">
 						Add note
 					</button>
 				</form>
