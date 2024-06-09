@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import noteContext from "../context/notes/noteContext";
 
 function Signup() {
 	const [user, setUser] = useState({ name: "", email: "", password: "", cpassword: "" });
+	const { showAlert } = useContext(noteContext);
 	const navigate = useNavigate();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -16,11 +18,16 @@ function Signup() {
 		});
 
 		const json = await response.json();
-		console.log(json);
+		// console.log(json);
 
-		//Save the authtoken and redirect
-		localStorage.setItem("token", json.authToken);
-		navigate("/");
+		if (json.success) {
+			//Save the authtoken and redirect
+			localStorage.setItem("token", json.authtoken);
+			showAlert("Signup Successfull", "success");
+			navigate("/");
+		} else {
+			showAlert("Invalid details", "warning");
+		}
 	};
 	const handleChange = (e) => {
 		setUser({
@@ -30,7 +37,8 @@ function Signup() {
 	};
 
 	return (
-		<div className="container">
+		<div className="container mt-2">
+			<h2>Create an account to use iNoteBook</h2>
 			<form onSubmit={handleSubmit}>
 				<div className="mb-3">
 					<input
@@ -42,6 +50,8 @@ function Signup() {
 						aria-describedby="emailHelp"
 						placeholder="Name"
 						onChange={handleChange}
+						minLength={3}
+						required
 					/>
 				</div>
 				<div className="mb-3">
@@ -54,6 +64,7 @@ function Signup() {
 						aria-describedby="emailHelp"
 						placeholder="Email Address"
 						onChange={handleChange}
+						required
 					/>
 				</div>
 				<div className="mb-3">
@@ -65,6 +76,8 @@ function Signup() {
 						value={user.password}
 						placeholder="Password"
 						onChange={handleChange}
+						minLength={5}
+						required
 					/>
 				</div>
 				<div className="mb-3">
@@ -76,6 +89,8 @@ function Signup() {
 						value={user.cpassword}
 						placeholder="Confirm Password"
 						onChange={handleChange}
+						minLength={5}
+						required
 					/>
 				</div>
 

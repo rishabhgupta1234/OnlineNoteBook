@@ -18,16 +18,17 @@ router.post(
 		body("password", "Password must be atleast 5 characters long").isLength({ min: 5 }),
 	],
 	async (req, res) => {
+		let success = false;
 		// If there are errors,return Bad request and the errors
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
+			return res.status(400).json({ success, errors: errors.array() });
 		}
 		try {
 			let user = await User.findOne({ email: req.body.email });
-			console.log(user);
+			// console.log(user);
 			if (user) {
-				return res.status(400).json({ error: "Sorry a user with this email already exists" });
+				return res.status(400).json({ success, error: "Sorry a user with this email already exists" });
 			}
 			const salt = await bcrypt.genSalt(10);
 			const secPassword = await bcrypt.hash(req.body.password, salt);
@@ -44,11 +45,12 @@ router.post(
 				},
 			};
 			const authToken = jwt.sign(data, JWT_SECRET);
-			console.log(authToken);
-			res.json({ authToken: authToken });
+			// console.log(authToken);
+			success = true;
+			res.json({ success, authToken: authToken });
 		} catch (error) {
-			console.log(error.message);
-			res.status(500).send("Internal server error occurred");
+			// console.log(error.message);
+			res.status(500).send(success, "Internal server error occurred");
 		}
 	}
 );
@@ -65,6 +67,7 @@ router.post(
 			return res.status(400).json({ errors: errors.array() });
 		}
 		const { email, password } = req.body;
+		// console.log("details", email, password);
 		try {
 			let user = await User.findOne({ email: email });
 			// console.log(user);
@@ -76,18 +79,19 @@ router.post(
 			if (!passwordCompare) {
 				return res.status(400).json({ success, error: "Please try to login with correct credentials" });
 			}
-			console.log("passwordCompare ", passwordCompare);
+			// console.log("passwordCompare ", passwordCompare);
 			const payload = {
 				user: {
 					id: user.id,
 				},
 			};
-			console.log(user);
+			// console.log(user);
 			const authtoken = jwt.sign(payload, JWT_SECRET);
-			console.log("authtoken ", authtoken);
+			// console.log("authtoken ", authtoken);
 			success = true;
 			res.status(200).json({ success, authtoken: authtoken });
 		} catch (error) {
+			// console.log("email and password", email, password);
 			res.status(500).send("Internal server error occurred");
 		}
 	}

@@ -3,9 +3,11 @@ import noteContext from "../context/notes/noteContext";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+	const host = "http://localhost:5001";
 	const [user, setUser] = useState({ email: "", password: "" });
 	const navigate = useNavigate();
-	// const { loginUser } = useContext(noteContext);
+
+	const { showAlert } = useContext(noteContext);
 	const handleChange = (e) => {
 		setUser({
 			...user,
@@ -14,7 +16,8 @@ function Login() {
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const response = await fetch(`http://localhost:5001/api/auth/login`, {
+		// console.log("handleSubmit is called");
+		const response = await fetch(`${host}/api/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -23,17 +26,20 @@ function Login() {
 		});
 
 		const json = await response.json();
-		console.log(json);
+		// console.log(json);
 		if (json.success) {
 			//Save the authtoken and redirect
-			localStorage.setItem("token", json.authToken);
+			// console.log("login success");
+			localStorage.setItem("token", json.authtoken);
+			showAlert("Login Successfull", "success");
 			navigate("/");
 		} else {
-			alert("Invalid credentials");
+			showAlert("Invalid user credentials", "warning");
 		}
 	};
 	return (
-		<div>
+		<div className="mt-2">
+			<h2>Login to continue to iNoteBook</h2>
 			<form onSubmit={handleSubmit}>
 				<div className="form-group my-2">
 					<input
@@ -45,6 +51,7 @@ function Login() {
 						onChange={handleChange}
 						aria-describedby="emailHelp"
 						placeholder="Enter email"
+						required
 					/>
 				</div>
 				<div className="form-group my-2">
@@ -56,6 +63,7 @@ function Login() {
 						value={user.password}
 						onChange={handleChange}
 						placeholder="Password"
+						required
 					/>
 				</div>
 
