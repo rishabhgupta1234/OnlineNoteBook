@@ -4,11 +4,13 @@ import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
 import { useNavigate } from "react-router-dom";
 import alertContext from "../context/alert/alertContext";
+import userContext from "../context/user/userContext";
 
 function Notes() {
 	const context = useContext(noteContext);
 	const { notes, getNotes, editNote } = context;
 	const { showAlert } = useContext(alertContext);
+	const { UserInfo } = useContext(userContext);
 	const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "default" });
 	const ref = useRef(null);
 	const refClose = useRef(null);
@@ -17,6 +19,7 @@ function Notes() {
 	useEffect(() => {
 		if (localStorage.getItem("token")) {
 			getNotes();
+			UserInfo();
 		} else {
 			navigate("/login");
 		}

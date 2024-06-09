@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import userContext from "../context/user/userContext";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const UserInfo = async () => {
-		const response = await fetch("http://localhost:5001/api/auth/getUser", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				"auth-token": localStorage.getItem("token"),
-			},
-		});
-
-		const json = await response.json();
-		console.log(json);
-
-		if (response.ok) {
-			setName(json.name);
-			setEmail(json.email);
-		}
-	};
+	const { name, email } = useContext(userContext);
+	const navigate = useNavigate();
 	useEffect(() => {
-		UserInfo();
+		if (!localStorage.getItem("token")) {
+			navigate("/login");
+		}
 	}, []);
-
 	return (
 		<div className="container">
 			<div className="user-info">

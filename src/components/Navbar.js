@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import userContext from "../context/user/userContext";
 
 const Navbar = () => {
 	let location = useLocation();
 	const navigate = useNavigate();
+	const { name } = useContext(userContext);
 	// useEffect(() => {
 	// 	// console.log(location.pathname);
 	// }, [location]);
@@ -56,11 +58,6 @@ const Navbar = () => {
 							</li>
 						</ul>
 						<form className="d-flex" role="search">
-							<Link className="navbar-brand" to="/">
-								{/* {name} */}
-								Rishabh
-							</Link>
-
 							{!localStorage.getItem("token") ? (
 								<form className="d-flex">
 									<Link className="btn btn-primary mx-1" to="/login" role="button">
@@ -71,9 +68,14 @@ const Navbar = () => {
 									</Link>
 								</form>
 							) : (
-								<button className="btn btn-primary" onClick={handleLogout}>
-									Logout
-								</button>
+								<>
+									<Link className="navbar-brand" to="/">
+										Hi {name.split(" ")[0]}
+									</Link>
+									<button className="btn btn-primary" onClick={handleLogout}>
+										Logout
+									</button>
+								</>
 							)}
 						</form>
 					</div>
