@@ -1,18 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import NoteContext from "./noteContext";
+import alertContext from "../alert/alertContext";
 
 const NoteState = (props) => {
-	const [alert, setAlert] = useState(null);
-	const showAlert = (message, type) => {
-		setAlert({
-			msg: message,
-			type: type,
-		});
-		setTimeout(() => {
-			setAlert(null);
-		}, 3000);
-	};
-
+	const { showAlert } = useContext(alertContext);
 	const host = "http://localhost:5001";
 	// const notesInitial = [];
 
@@ -111,7 +102,7 @@ const NoteState = (props) => {
 	};
 
 	return (
-		<NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes, showAlert, alert }}>
+		<NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
 			{props.children}
 		</NoteContext.Provider>
 	);

@@ -3,10 +3,12 @@ import noteContext from "../context/notes/noteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
 import { useNavigate } from "react-router-dom";
+import alertContext from "../context/alert/alertContext";
 
 function Notes() {
 	const context = useContext(noteContext);
-	const { notes, getNotes, editNote, showAlert } = context;
+	const { notes, getNotes, editNote } = context;
+	const { showAlert } = useContext(alertContext);
 	const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "default" });
 	const ref = useRef(null);
 	const refClose = useRef(null);

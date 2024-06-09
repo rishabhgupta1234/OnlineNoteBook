@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import noteContext from "../context/notes/noteContext";
+import alertContext from "../context/alert/alertContext";
 export default function AddNote() {
 	const context = useContext(noteContext);
-	const { addNote, showAlert } = context;
+	const { addNote } = context;
+	const { showAlert } = useContext(alertContext);
 
 	const [note, setNote] = useState({ title: "", description: "", tag: "default" });
 

@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import noteContext from "../context/notes/noteContext";
+
+import alertContext from "../context/alert/alertContext";
 
 function Signup() {
 	const [user, setUser] = useState({ name: "", email: "", password: "", cpassword: "" });
-	const { showAlert } = useContext(noteContext);
+	const { showAlert } = useContext(alertContext);
 	const navigate = useNavigate();
 	const handleSubmit = async (e) => {
 		e.preventDefault();

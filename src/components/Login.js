@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import noteContext from "../context/notes/noteContext";
+import alertContext from "../context/alert/alertContext";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -7,7 +7,7 @@ function Login() {
 	const [user, setUser] = useState({ email: "", password: "" });
 	const navigate = useNavigate();
 
-	const { showAlert } = useContext(noteContext);
+	const { showAlert } = useContext(alertContext);
 	const handleChange = (e) => {
 		setUser({
 			...user,

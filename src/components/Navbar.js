@@ -46,14 +46,21 @@ const Navbar = () => {
 									About
 								</Link>
 							</li>
+							<li className="nav-item">
+								<Link
+									className={`nav-link ${location.pathname === "/profile" ? "active" : ""}`}
+									aria-current="page"
+									to="/profile">
+									User Profile
+								</Link>
+							</li>
 						</ul>
 						<form className="d-flex" role="search">
-							{/* <input
-								className="form-control me-2"
-								type="search"
-								placeholder="Search"
-								aria-label="Search"
-							/> */}
+							<Link className="navbar-brand" to="/">
+								{/* {name} */}
+								Rishabh
+							</Link>
+
 							{!localStorage.getItem("token") ? (
 								<form className="d-flex">
 									<Link className="btn btn-primary mx-1" to="/login" role="button">
